@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var pathlib = require('path');
+const fs = require('fs');
+const pathlib = require('path');
 
-var localCLIPath = pathlib.resolve(process.cwd(), 'node_modules/nostromo/src/cli.js');
+const localCLIPath = pathlib.resolve('node_modules/nostromo/src/cli.js');
 
 try {
     fs.statSync(localCLIPath);
     require(localCLIPath);
 }
 catch (err) {
-    console.log('No local installation of nostromo was found in this directory.')
+    if (err.code === 'ENOENT') {
+        console.log('No local installation of nostromo was found in this directory.');
+    }
+    else {
+        console.error(err);
+    }
 }
